@@ -5,11 +5,11 @@
    Type: Figtree everywhere. */
 
 :root {
-  --bg: #1e1f22;
-  --card: #2b2d31;
-  --surface-3: #313338;
-  --input-bg: #1e1f22;
-  --border: #3f4147;
+  --bg: #171819;
+  --card: #222327;
+  --surface-3: #2a2b2f;
+  --input-bg: #171819;
+  --border: #383a3f;
   --text: #f2f3f5;
   --text-2: #b5bac1;
   --muted: #949ba4;
@@ -134,6 +134,30 @@ input, textarea { font: inherit; color: var(--text); }
 }
 
 /* Header */
+.head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.btn-plan {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  margin-top: 20px;
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-ctrl);
+  background: var(--card);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-plan:hover { color: var(--text); border-color: #52555c; }
+
 .head-kicker {
   font-size: 12px;
   font-weight: 800;
@@ -324,6 +348,7 @@ input, textarea { font: inherit; color: var(--text); }
 }
 .phase-head:hover { background: var(--surface-3); }
 .phase-row.open .phase-head { background: var(--surface-3); }
+.phase-head.static { cursor: default; }
 
 .phase-badge {
   flex: none;
@@ -489,3 +514,19 @@ input, textarea { font: inherit; color: var(--text); }
 .text-input:hover { border-color: #52555c; }
 .text-input:focus-visible { outline: none; border-color: var(--accent); }
 textarea.text-input { min-height: 80px; resize: none; overflow: hidden; }
+
+/* ---------- Footer ---------- */
+
+.foot-link {
+  display: block;
+  margin: 30px auto 0;
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+.foot-link:hover { color: var(--text-2); }

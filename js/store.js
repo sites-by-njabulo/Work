@@ -108,6 +108,12 @@ function challengeFinished() {
   return raw !== null && raw > 31;
 }
 
+/* Start date is in the future: the challenge has not begun yet. */
+function challengeNotStarted() {
+  const raw = rawDayNumber();
+  return raw !== null && raw < 1;
+}
+
 /* ---- Day status for the Plan map and Progress stats ---- */
 
 function dayStatus(n, current) {
@@ -116,7 +122,8 @@ function dayStatus(n, current) {
   const done = rec ? items.filter(i => rec.checklist && rec.checklist[i.key]).length : 0;
   const hasFeedback = !!(rec && rec.feedback &&
     (rec.feedback.fillers != null || rec.feedback.pace || rec.feedback.energy ||
-     rec.feedback.sentences || (rec.feedback.fixToday || "").trim()));
+     rec.feedback.bodyLanguage || rec.feedback.volume ||
+     (rec.feedback.fixToday || "").trim()));
   const complete = done === items.length;
   if (n === current && !challengeFinished()) {
     return complete ? "complete" : "current";

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Work</title>
   <meta name="description" content="31 day communication skills challenge tracker.">
-  <meta name="theme-color" content="#1e1f22">
+  <meta name="theme-color" content="#171819">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -23,9 +23,11 @@
       <h1 class="start-title">31 days. Say it like you mean it.</h1>
       <p class="start-sub">Film daily. Review honestly. Drill the voice. 40 minutes a day for 31 days.</p>
       <button class="btn-primary" id="startTodayBtn" type="button">Start Day 1 today</button>
-      <button class="btn-ghost" id="startPickBtn" type="button">I already started on another date</button>
+      <button class="btn-primary" id="startTomorrowBtn" type="button" style="margin-left:8px">Start Day 1 tomorrow</button>
+      <br>
+      <button class="btn-ghost" id="startPickBtn" type="button">Pick a different start date</button>
       <div class="start-pick" id="startPickRow" hidden>
-        <label for="startDateInput">Day 1 was on</label>
+        <label for="startDateInput">Day 1 date</label>
         <input type="date" id="startDateInput">
         <button class="btn-primary btn-small" id="startConfirmBtn" type="button">Set start date</button>
       </div>

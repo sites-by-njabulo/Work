@@ -2,7 +2,7 @@
    scriptRequired drives the fourth checklist item (days 16-31).
    reviewRequired is false only on Day 1 (there is no video to review yet). */
 const PLAN_PHASES = [
-  { days: [1, 2],    title: "Speak Clearly & Sound Intelligent",
+  { days: [1, 2],    title: "How to Speak Clearly",
     prompt: "Slow down, hit your consonants, and end every sentence with intent." },
   { days: [3, 4],    title: "Stop Stuttering & Vocal Clarity",
     prompt: "Breathe before you speak and let each word land fully before the next." },

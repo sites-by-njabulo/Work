@@ -1,4 +1,4 @@
-/* WORK - single page: header, progress minibars, daily checklist, 31 day plan accordion.
+/* WORK - two simple views: Today (only the current day) and the full 31 Day Plan.
    All persistence goes through Store (store.js). */
 (function () {
   "use strict";
@@ -14,7 +14,8 @@
   const MINUS_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
   const PLUS_SVG = `<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><line x1="12" y1="5" x2="12" y2="19"/></svg>`;
 
-  let expandedPhase = null; // index into PLAN_PHASES, null = all closed
+  let view = "today";        // "today" | "plan"
+  let expandedPhase = null;  // index into PLAN_PHASES on the plan view
 
   function esc(s) {
     return String(s == null ? "" : s)
@@ -48,13 +49,19 @@
     }
     startScreen.hidden = true;
     appShell.hidden = false;
-    expandedPhase = phaseIndexForDay(currentDay());
     render();
   }
 
   function bindStartScreen() {
     $("#startTodayBtn").addEventListener("click", () => {
       Store.setStartDate(todayISO());
+      location.reload();
+    });
+    $("#startTomorrowBtn").addEventListener("click", () => {
+      const d = new Date(todayISO() + "T00:00:00");
+      d.setDate(d.getDate() + 1);
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      Store.setStartDate(d.getFullYear() + "-" + m + "-" + String(d.getDate()).padStart(2, "0"));
       location.reload();
     });
     $("#startPickBtn").addEventListener("click", () => {
@@ -65,7 +72,6 @@
     $("#startConfirmBtn").addEventListener("click", () => {
       const v = $("#startDateInput").value;
       if (!v) return;
-      if (new Date(v + "T00:00:00") > new Date(todayISO() + "T00:00:00")) return;
       Store.setStartDate(v);
       location.reload();
     });
@@ -74,24 +80,48 @@
   /* ---------- render ---------- */
 
   function render() {
-    const cur = currentDay();
+    const notStarted = challengeNotStarted();
+    const cur = notStarted ? 0 : currentDay();
     const finished = challengeFinished();
+    const focusDay = notStarted ? 1 : cur;
 
-    appShell.innerHTML =
-      headerHTML(cur, finished) +
-      trackHTML(cur) +
-      fixLineHTML(cur, finished) +
-      checklistHTML(cur, finished) +
-      planHTML(cur);
+    let html = headerHTML(cur, finished, notStarted) + trackHTML(cur);
 
+    if (view === "today") {
+      if (!notStarted && !finished) {
+        html += fixLineHTML(cur) + checklistHTML(cur);
+      }
+      if (!finished) html += todayPhaseHTML(focusDay, cur);
+    } else {
+      html += planHTML(cur);
+    }
+
+    html += `<button class="foot-link" type="button" id="changeStartBtn">Change start date</button>`;
+    appShell.innerHTML = html;
     bind(cur);
   }
 
-  function headerHTML(cur, finished) {
+  function headerHTML(cur, finished, notStarted) {
+    let title, sub;
+    if (notStarted) {
+      title = "Starts " + fmtDate(dateForDay(1));
+      sub = "Day 1 is locked in. Read the focus below and come ready.";
+    } else if (finished) {
+      title = "31 days. Done.";
+      sub = "Reread your notes and watch how far your voice came.";
+    } else {
+      title = "Day " + cur + " of 31";
+      sub = fmtDate(dateForDay(cur)) + " &middot; 40 min daily";
+    }
     return `
-      <p class="head-kicker">WORK<span class="dot">.</span></p>
-      <h1 class="head-title">${finished ? "31 days. Done." : "Day " + cur + " of 31"}</h1>
-      <p class="head-sub">${finished ? "Reread your notes and watch how far your voice came." : fmtDate(dateForDay(cur)) + " &middot; 40 min daily"}</p>`;
+      <div class="head-row">
+        <div>
+          <p class="head-kicker">WORK<span class="dot">.</span></p>
+          <h1 class="head-title">${title}</h1>
+          <p class="head-sub">${sub}</p>
+        </div>
+        <button class="btn-plan" type="button" id="viewToggleBtn">${view === "today" ? "All days" : "Today"}</button>
+      </div>`;
   }
 
   function trackHTML(cur) {
@@ -115,8 +145,7 @@
     return c;
   }
 
-  function fixLineHTML(cur, finished) {
-    if (finished) return "";
+  function fixLineHTML(cur) {
     const p = planForDay(cur);
     if (!p.reviewRequired) return "";
     const rec = Store.getDay(cur);
@@ -127,8 +156,7 @@
     return `<div class="fix-line is-empty" id="fixLine"><span class="fx-label">Fix today</span><span class="fx-text" id="fixText">Review yesterday's video below and set the one thing to fix.</span></div>`;
   }
 
-  function checklistHTML(cur, finished) {
-    if (finished) return "";
+  function checklistHTML(cur) {
     const items = checklistForDay(cur);
     const rec = Store.getDay(cur);
     const checks = (rec && rec.checklist) || {};
@@ -148,6 +176,29 @@
       </div>`;
   }
 
+  /* Today view: only the current day, inside its focus block */
+  function todayPhaseHTML(focusDay, cur) {
+    const p = planForDay(focusDay);
+    const phase = PLAN_PHASES[phaseIndexForDay(focusDay)];
+    const span = phase.days.length === 1
+      ? "Day " + phase.days[0]
+      : "Days " + phase.days[0] + " to " + phase.days[phase.days.length - 1];
+    return `
+      <div class="plan">
+        <div class="phase-row open">
+          <div class="phase-head static">
+            <span class="phase-badge">${span}</span>
+            <span class="phase-name">${esc(phase.title)}</span>
+          </div>
+          <div class="phase-body">
+            <p class="phase-desc">${esc(p.focusPrompt)}</p>
+            ${dayBlockHTML(focusDay, cur)}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  /* Plan view: full accordion */
   function planHTML(cur) {
     return `
       <div class="plan-header">
@@ -195,7 +246,8 @@
     } else {
       html += `
         ${rubricRateRow(n, "pace", "Pace", fb.pace)}
-        ${rubricRateRow(n, "sentences", "Finished sentences", fb.sentences)}
+        ${rubricRateRow(n, "bodyLanguage", "Body language", fb.bodyLanguage)}
+        ${rubricRateRow(n, "volume", "Volume", fb.volume)}
         ${rubricRateRow(n, "energy", "Energy and confidence", fb.energy)}
         <div class="rub-row">
           <span class="rub-name" id="fill-l-${n}">Filler words</span>
@@ -233,10 +285,30 @@
   /* ---------- events ---------- */
 
   function bind(cur) {
-    // Progress minibars: open that day's phase
+    // Today / All days toggle
+    $("#viewToggleBtn").addEventListener("click", () => {
+      if (view === "today") {
+        view = "plan";
+        expandedPhase = phaseIndexForDay(challengeNotStarted() ? 1 : cur);
+      } else {
+        view = "today";
+      }
+      render();
+      window.scrollTo({ top: 0 });
+    });
+
+    // Change start date: reopen the start screen (data stays)
+    $("#changeStartBtn").addEventListener("click", () => {
+      appShell.hidden = true;
+      startScreen.hidden = false;
+      bindStartScreen();
+    });
+
+    // Progress minibars: open that day in the full plan
     $$("[data-track]", appShell).forEach(btn => {
       btn.addEventListener("click", () => {
         const n = parseInt(btn.dataset.track, 10);
+        view = "plan";
         expandedPhase = phaseIndexForDay(n);
         render();
         const block = $(`.day-block[data-day="${n}"]`, appShell);
@@ -255,7 +327,7 @@
       });
     });
 
-    // Accordion
+    // Accordion (plan view)
     $$("[data-phase]", appShell).forEach(btn => {
       btn.addEventListener("click", () => {
         const i = parseInt(btn.dataset.phase, 10);
