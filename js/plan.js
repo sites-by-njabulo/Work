@@ -1,6 +1,6 @@
 /* The 31-day communication challenge plan.
    scriptRequired drives the fourth checklist item (days 16-31).
-   reviewRequired is false only on Day 1 (there is no video to review yet). */
+   Review is a fixed daily item on every day, Day 1 included. */
 const PLAN_PHASES = [
   { days: [1, 2],    title: "How to Speak Clearly",
     prompt: "Slow down, hit your consonants, and end every sentence with intent." },
@@ -51,7 +51,7 @@ const PLAN = (() => {
         focusTitle: phase.title,
         focusPrompt: phase.prompt,
         scriptRequired: day >= 16,
-        reviewRequired: day >= 2
+        reviewRequired: true
       });
     }
   }
