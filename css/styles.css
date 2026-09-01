@@ -1,24 +1,27 @@
 /* WORK - 31 day communication challenge
-   Theme: locked dark minimalist, Discord-inspired. One sparse accent (blurple),
-   used only for active states, badges, and progress.
-   Radius rule: cards 12px, controls 8px, badges pill.
-   Type: Figtree everywhere. */
+   Design copied from MyDay (Linear-derived dark tokens): near-black bg,
+   #141516 cards, #5e6ad2 indigo accent used sparingly, Inter everywhere.
+   Radius rule (MyDay's): cards 12px, controls 8px, checks 4px, badges pill. */
 
 :root {
-  --bg: #171819;
-  --card: #222327;
-  --surface-3: #2a2b2f;
-  --input-bg: #171819;
-  --border: #383a3f;
-  --text: #f2f3f5;
-  --text-2: #b5bac1;
-  --muted: #949ba4;
-  --accent: #5865f2;
-  --accent-hover: #7983f5;
-  --accent-soft: rgba(88, 101, 242, 0.14);
+  --bg: #0a0a0c;
+  --card: #141516;
+  --surface-3: #18191a;
+  --input-bg: #0f1011;
+  --border: #23252a;
+  --hairline-strong: #34343a;
+  --text: #f7f8f8;
+  --text-2: #8a8f98;
+  --muted: #8a8f98;
+  --accent: #5e6ad2;
+  --accent-hover: #828fff;
+  --accent-soft: rgba(94, 106, 210, 0.14);
+  --danger-soft: rgba(239, 68, 68, 0.35);
   --r-card: 12px;
   --r-ctrl: 8px;
+  --shadow-soft: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,7 +33,7 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: "Figtree", "Segoe UI", sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   line-height: 1.55;
   min-height: 100dvh;
@@ -61,35 +64,35 @@ input, textarea { font: inherit; color: var(--text); }
 .start-inner { max-width: 420px; width: 100%; }
 
 .start-kicker {
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--accent-hover);
   margin-bottom: 12px;
 }
 
 .start-title {
-  font-size: clamp(30px, 8vw, 40px);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: clamp(28px, 8vw, 36px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.6px;
   margin-bottom: 12px;
 }
 
-.start-sub { color: var(--text-2); margin-bottom: 26px; max-width: 36ch; }
+.start-sub { color: var(--text-2); font-size: 14px; margin-bottom: 26px; max-width: 38ch; }
 
 .start-pick {
   margin-top: 18px;
   display: flex; flex-direction: column; gap: 10px; align-items: flex-start;
 }
-.start-pick label { font-weight: 600; font-size: 14px; color: var(--text-2); }
+.start-pick label { font-weight: 600; font-size: 13px; color: var(--text-2); }
 .start-pick input[type="date"] {
   border: 1px solid var(--border);
   border-radius: var(--r-ctrl);
   background: var(--input-bg);
   padding: 10px 14px;
-  min-height: 46px;
+  min-height: 44px;
   color-scheme: dark;
 }
 
@@ -97,16 +100,16 @@ input, textarea { font: inherit; color: var(--text); }
 
 .btn-primary {
   display: inline-flex; align-items: center; justify-content: center;
-  min-height: 46px;
-  padding: 10px 22px;
+  min-height: 44px;
+  padding: 10px 20px;
   border-radius: var(--r-ctrl);
   background: var(--accent);
   color: #ffffff;
-  font-weight: 700;
-  font-size: 15px;
-  transition: background 0.15s var(--ease-out), transform 0.1s;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.15s var(--ease-out-quart), transform 0.1s;
 }
-.btn-primary:hover { background: var(--accent-hover); }
+.btn-primary:hover { background: #6a76dd; }
 .btn-primary:active { transform: scale(0.98); }
 
 .btn-ghost {
@@ -114,8 +117,8 @@ input, textarea { font: inherit; color: var(--text); }
   min-height: 44px;
   margin-top: 8px;
   padding: 6px 2px;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 13.5px;
   color: var(--text-2);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -123,7 +126,7 @@ input, textarea { font: inherit; color: var(--text); }
 }
 .btn-ghost:hover { color: var(--text); }
 
-.btn-small { min-height: 42px; padding: 8px 18px; font-size: 14px; }
+.btn-small { min-height: 40px; padding: 8px 16px; font-size: 13.5px; }
 
 /* ---------- App layout ---------- */
 
@@ -145,37 +148,38 @@ input, textarea { font: inherit; color: var(--text); }
   flex: none;
   display: inline-flex;
   align-items: center;
-  min-height: 38px;
+  min-height: 36px;
   margin-top: 20px;
-  padding: 7px 16px;
+  padding: 7px 14px;
   border: 1px solid var(--border);
   border-radius: var(--r-ctrl);
   background: var(--card);
+  box-shadow: var(--shadow-soft);
   font-size: 13px;
   font-weight: 600;
   color: var(--text-2);
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s var(--ease-out-quart), border-color 0.15s var(--ease-out-quart);
 }
-.btn-plan:hover { color: var(--text); border-color: #52555c; }
+.btn-plan:hover { color: var(--text); border-color: var(--hairline-strong); }
 
 .head-kicker {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-2);
 }
-.head-kicker .dot { color: var(--accent); }
+.head-kicker .dot { color: var(--accent-hover); }
 
 .head-title {
-  font-size: 26px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
   margin-top: 4px;
 }
 
 .head-sub {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-2);
   margin-top: 2px;
@@ -199,20 +203,21 @@ input, textarea { font: inherit; color: var(--text); }
   height: 8px;
   border-radius: 2px;
   background: var(--surface-3);
+  box-shadow: inset 0 0 0 1px var(--border);
   transition: background 0.15s;
 }
 .track button:hover span { background: var(--border); }
-.track button.t-complete span { background: var(--accent); }
+.track button.t-complete span { background: var(--accent); box-shadow: none; }
 .track button.t-complete:hover span { background: var(--accent-hover); }
 .track button.t-partial span { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
-.track button.t-current span { background: var(--text); }
-.track button.t-missed span { background: #4a4030; }
+.track button.t-current span { background: var(--text); box-shadow: none; }
+.track button.t-missed span { background: var(--danger-soft); box-shadow: none; }
 
 .track-caption {
   display: flex; justify-content: space-between;
   font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
+  font-weight: 500;
+  color: var(--text-2);
   margin-bottom: 20px;
 }
 
@@ -223,53 +228,55 @@ input, textarea { font: inherit; color: var(--text); }
   background: var(--accent-soft);
   border: 1px solid var(--accent);
   border-radius: var(--r-ctrl);
-  padding: 10px 14px;
+  padding: 11px 14px;
   margin-bottom: 20px;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 .fix-line .fx-label {
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--accent-hover);
   white-space: nowrap;
 }
 .fix-line .fx-text { font-weight: 600; color: var(--text); }
 .fix-line.is-empty { background: transparent; border-color: var(--border); }
-.fix-line.is-empty .fx-label { color: var(--muted); }
+.fix-line.is-empty .fx-label { color: var(--text-2); }
 .fix-line.is-empty .fx-text { color: var(--text-2); font-weight: 500; }
 
-/* ---------- Cards ---------- */
+/* ---------- Cards (MyDay sc27-card) ---------- */
 
 .card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r-card);
-  padding: 18px;
-  margin-bottom: 26px;
+  padding: 20px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-soft);
 }
 
 .card-title {
   font-size: 15px;
   font-weight: 700;
+  letter-spacing: -0.4px;
   margin-bottom: 2px;
 }
 .card-sub {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-2);
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
-/* ---------- Daily checklist ---------- */
+/* ---------- Daily checklist (MyDay sc27-task) ---------- */
 
 .task {
   display: flex; align-items: flex-start; gap: 12px;
   width: 100%;
   text-align: left;
   padding: 11px 0;
-  border-bottom: 1px solid var(--surface-3);
+  border-bottom: 1px solid var(--border);
 }
 .task:last-of-type { border-bottom: none; }
 
@@ -278,10 +285,10 @@ input, textarea { font: inherit; color: var(--text); }
   width: 22px; height: 22px;
   margin-top: 1px;
   border: 1.5px solid var(--border);
-  border-radius: 6px;
+  border-radius: 4px;
   color: #ffffff;
   display: flex; align-items: center; justify-content: center;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s var(--ease-out-quart), border-color 0.15s var(--ease-out-quart);
 }
 .task-check svg { width: 13px; height: 13px; display: none; }
 .task:hover .task-check { border-color: var(--accent); }
@@ -310,8 +317,8 @@ input, textarea { font: inherit; color: var(--text); }
 
 .all-done {
   display: flex; align-items: center; gap: 8px;
-  margin-top: 14px;
-  padding: 11px 14px;
+  margin-top: 16px;
+  padding: 12px 14px;
   background: var(--accent-soft);
   border: 1px solid var(--accent);
   border-radius: var(--r-ctrl);
@@ -324,15 +331,18 @@ input, textarea { font: inherit; color: var(--text); }
 /* ---------- Plan header ---------- */
 
 .plan-header { margin-bottom: 12px; }
-.plan-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-.plan-sub { font-size: 12.5px; font-weight: 500; color: var(--text-2); }
+.plan-title { font-size: 15px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 2px; }
+.plan-sub { font-size: 12px; font-weight: 500; color: var(--text-2); }
 
-/* ---------- Accordion ---------- */
+/* ---------- Accordion (MyDay sc27-plan) ---------- */
 
 .plan {
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--border);
   border-radius: var(--r-card);
   overflow: hidden;
+  margin-bottom: 4px;
 }
 
 .phase-row { border-bottom: 1px solid var(--border); }
@@ -342,9 +352,9 @@ input, textarea { font: inherit; color: var(--text); }
   display: flex; align-items: center; gap: 12px;
   width: 100%;
   min-height: 52px;
-  padding: 13px 16px;
+  padding: 14px 16px;
   text-align: left;
-  transition: background 0.15s;
+  transition: background 0.15s var(--ease-out-quart);
 }
 .phase-head:hover { background: var(--surface-3); }
 .phase-row.open .phase-head { background: var(--surface-3); }
@@ -354,11 +364,11 @@ input, textarea { font: inherit; color: var(--text); }
   flex: none;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.2px;
   color: var(--accent-hover);
   background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 3px 10px;
+  border-radius: 9999px;
+  padding: 3px 9px;
   white-space: nowrap;
 }
 
@@ -371,9 +381,9 @@ input, textarea { font: inherit; color: var(--text); }
 
 .phase-chevron {
   flex: none;
-  color: var(--muted);
+  color: var(--text-2);
   display: flex; align-items: center;
-  transition: transform 0.22s var(--ease-out);
+  transition: transform 0.22s var(--ease-out-quart);
 }
 .phase-chevron svg {
   width: 16px; height: 16px;
@@ -390,6 +400,7 @@ input, textarea { font: inherit; color: var(--text); }
 
 .phase-desc {
   font-size: 14px;
+  font-weight: 400;
   color: var(--text-2);
   line-height: 1.7;
   margin: 14px 0 4px;
@@ -408,20 +419,20 @@ input, textarea { font: inherit; color: var(--text); }
 }
 .day-head .d-name {
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 700;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
   color: var(--text);
 }
-.day-head .d-date { font-size: 12px; font-weight: 500; color: var(--muted); }
+.day-head .d-date { font-size: 12px; font-weight: 500; color: var(--text-2); }
 .day-head .d-today {
   font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.2px;
   text-transform: uppercase;
   color: var(--accent-hover);
   background: var(--accent-soft);
-  border-radius: 999px;
+  border-radius: 9999px;
   padding: 2px 8px;
 }
 
@@ -432,13 +443,13 @@ input, textarea { font: inherit; color: var(--text); }
   color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin: 14px 0 8px;
+  margin: 14px 0 6px;
 }
 .fb-label:first-child { margin-top: 0; }
 
 .fb-note {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--text-2);
   line-height: 1.6;
 }
 
@@ -463,7 +474,7 @@ input, textarea { font: inherit; color: var(--text); }
   font-size: 13px;
   font-weight: 600;
   color: var(--text-2);
-  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  transition: border-color 0.15s var(--ease-out-quart), background 0.15s, color 0.15s;
 }
 .rate button:hover { border-color: var(--accent); color: var(--text); }
 .rate button[aria-pressed="true"] {
@@ -479,7 +490,7 @@ input, textarea { font: inherit; color: var(--text); }
   border: 1px solid var(--border);
   background: var(--card);
   display: flex; align-items: center; justify-content: center;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s var(--ease-out-quart);
 }
 .stepper button:hover { border-color: var(--accent); }
 .stepper button svg {
@@ -498,20 +509,21 @@ input, textarea { font: inherit; color: var(--text); }
   .rub-row .rub-name { flex-basis: 100%; }
 }
 
+/* Inputs (MyDay sc27-textarea) */
 .text-input {
   display: block;
   width: 100%;
-  background: var(--input-bg);
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--r-ctrl);
   padding: 10px 12px;
   min-height: 44px;
   font-size: 14px;
   line-height: 1.6;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s var(--ease-out-quart);
 }
-.text-input::placeholder { color: var(--muted); }
-.text-input:hover { border-color: #52555c; }
+.text-input::placeholder { color: var(--text-2); opacity: 0.75; }
+.text-input:hover { border-color: var(--hairline-strong); }
 .text-input:focus-visible { outline: none; border-color: var(--accent); }
 textarea.text-input { min-height: 80px; resize: none; overflow: hidden; }
 
@@ -523,10 +535,10 @@ textarea.text-input { min-height: 80px; resize: none; overflow: hidden; }
   min-height: 44px;
   padding: 10px 16px;
   font-size: 12.5px;
-  font-weight: 600;
-  color: var(--muted);
+  font-weight: 500;
+  color: var(--text-2);
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color 0.15s;
 }
-.foot-link:hover { color: var(--text-2); }
+.foot-link:hover { color: var(--text); }

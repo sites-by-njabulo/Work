@@ -1,5 +1,5 @@
 /* Cache-first app shell. Bump CACHE on every deploy. */
-const CACHE = "work-v4";
+const CACHE = "work-v5";
 const SHELL = [
   "./",
   "./index.html",
